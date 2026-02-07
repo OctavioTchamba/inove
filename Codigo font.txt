@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INOVE ANGOLA | Cooperativa Multissetorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0a111f',
+                        skyblue: '#42a5f5',
+                        purewhite: '#ffffff'
+                    },
+                    animation: {
+                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+                    },
+                    keyframes: {
+                        'infinite-scroll': {
+                            from: { transform: 'translateX(0)' },
+                            to: { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; overflow-x: hidden; background-color: #0a111f; color: white; }
+        
+        .tech-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #16243d 0%, #0a111f 100%); }
+        .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(66, 165, 245, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(66, 165, 245, 0.05) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse at center, black, transparent 90%); }
+
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .glass-card:hover { background: rgba(255, 255, 255, 0.1); border-color: #42a5f5; transform: translateY(-10px); box-shadow: 0 20px 40px rgba(66, 165, 245, 0.1); }
+
+        /* Botão Animado Pro */
+        .btn-pro { position: relative; overflow: hidden; transition: all 0.4s ease; }
+        .btn-pro:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(66, 165, 245, 0.4); }
+        .btn-pro::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s; }
+        .btn-pro:hover::after { left: 100%; }
+
+        .menu-overlay { transform: translateY(-100%); transition: all 0.6s cubic-bezier(0.85, 0, 0.15, 1); }
+        .menu-overlay.active { transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="tech-bg"><div class="grid-overlay"></div></div>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 bg-navy/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center h-22">
+            <a href="#home">
+                <img src="logo-inove.png" alt="INOVE" class="h-12 md:h-14 w-auto object-contain">
+            </a>
+
+            <!-- Desktop Menu - WHITE TEXT -->
+            <ul class="hidden lg:flex space-x-8 font-bold text-[11px] uppercase tracking-[3px] text-purewhite">
+                <li><a href="#quem-somos" class="hover:text-skyblue transition">Quem Somos</a></li>
+                <li><a href="#servicos" class="hover:text-skyblue transition">Serviços</a></li>
+                <li><a href="#selo" class="hover:text-skyblue transition">Selo Inove</a></li>
+                <li><a href="#noticias" class="hover:text-skyblue transition">Notícias</a></li>
+            </ul>
+
+            <div class="flex items-center gap-6">
+                <!-- Idiomas -->
+                <div class="hidden md:flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                    <button class="text-[10px] font-bold text-skyblue">PT</button>
+                    <span class="text-gray-600">|</span>
+                    <button class="text-[10px] font-bold text-gray-400 hover:text-white transition">EN</button>
+                    <span class="text-gray-600">|</span>
+                    <button class="text-[10px] font-bold text-gray-400 hover:text-white transition">FR</button>
+                </div>
+
+                <button id="menuBtn" class="w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-skyblue rounded-full hover:bg-white transition-all group shadow-lg shadow-skyblue/20">
+                    <div id="line1" class="w-5 h-0.5 bg-navy transition-all"></div>
+                    <div id="line2" class="w-5 h-0.5 bg-navy transition-all"></div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FULLSCREEN MENU -->
+    <div id="overlay" class="menu-overlay fixed inset-0 bg-navy z-[40] flex flex-col items-center justify-center">
+        <ul class="text-center space-y-8 text-5xl md:text-7xl font-extrabold uppercase tracking-tighter text-white">
+            <li><a href="#home" class="hover:text-skyblue transition link-item">Início</a></li>
+            <li><a href="#quem-somos" class="hover:text-skyblue transition link-item">Quem Somos</a></li>
+            <li><a href="#servicos" class="hover:text-skyblue transition link-item">Serviços</a></li>
+            <li><a href="#selo" class="hover:text-skyblue transition link-item">Selo Inove</a></li>
+            <li><a href="#noticias" class="hover:text-skyblue transition link-item">Notícias</a></li>
+            <li><a href="#contactos" class="hover:text-skyblue transition link-item">Fale Connosco</a></li>
+        </ul>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="min-h-screen flex items-center pt-20 px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center w-full">
+            <div class="space-y-10">
+                <div class="inline-flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-skyblue text-[10px] font-black uppercase tracking-[4px]">
+                    <span class="animate-pulse w-2 h-2 bg-skyblue rounded-full"></span>
+                    Angola 2026
+                </div>
+                <h1 class="text-6xl md:text-[100px] font-extrabold leading-[0.85] tracking-tighter text-purewhite">
+                    A COOPERAÇÃO <br> QUE <span class="text-skyblue italic">ACELERA</span> <br> ANGOLA.
+                </h1>
+                <p class="text-xl text-gray-400 max-w-lg leading-relaxed border-l-2 border-skyblue pl-6">
+                    Qualificamos o potencial produtivo através de estratégia e mitigação de risco para o mercado real.
+                </p>
+                <div class="flex flex-wrap gap-6">
+                    <a href="#contactos" class="btn-pro bg-skyblue text-navy px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-skyblue/20">Aderir Agora</a>
+                    <a href="#servicos" class="btn-pro bg-white/5 border border-white/10 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-sm backdrop-blur-md">Nossa Visão</a>
+                </div>
+            </div>
+            <div class="relative hidden lg:block">
+                <div class="p-6 bg-white/5 rounded-[4rem] border border-white/10 shadow-3xl">
+                    <img src="hero-planta.jpg" class="rounded-[3rem] w-full h-[650px] object-cover opacity-90 shadow-2xl" onerror="this.src='https://images.unsplash.com/photo-1485244539055-5f60bbb97ef9?q=80&w=1000'">
+                </div>
+                <div class="absolute -bottom-10 -left-10 glass-card p-12 rounded-[2.5rem] border-white/20 shadow-2xl">
+                    <div class="text-8xl font-black text-purewhite leading-none">80%</div>
+                    <div class="text-[11px] font-bold uppercase tracking-[5px] text-skyblue mt-4">Taxa de Sucesso</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARCEIROS EM MOVIMENTO -->
+    <section class="py-20 border-y border-white/5 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-center text-[10px] font-bold uppercase tracking-[5px] text-gray-500 mb-10">Parceiros Oficiais</p>
+            <div class="flex overflow-hidden space-x-16 group">
+                <div class="flex space-x-16 animate-infinite-scroll group-hover:pause">
+                    <!-- PARCEIRO 1 -->
+                    <div class="flex items-center gap-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition min-w-[200px]">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest">KOVOSU ANGOLA</span>
+                    </div>
+                    <!-- PARCEIRO 2 -->
+                    <div class="flex items-center gap-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition min-w-[200px]">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest">FADA</span>
+                    </div>
+                    <!-- PARCEIRO 3 -->
+                    <div class="flex items-center gap-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition min-w-[200px]">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest">BANCO SOL</span>
+                    </div>
+                    <!-- PARCEIRO 4 -->
+                    <div class="flex items-center gap-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition min-w-[200px]">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest">MINAGRIF</span>
+                    </div>
+                </div>
+                <!-- Clonagem para o efeito infinito -->
+                <div class="flex space-x-16 animate-infinite-scroll group-hover:pause" aria-hidden="true">
+                    <div class="flex items-center gap-4 min-w-[200px] opacity-40">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest uppercase">ZÉNETE HUB</span>
+                    </div>
+                    <div class="flex items-center gap-4 min-w-[200px] opacity-40">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest uppercase">PME ANGOLA</span>
+                    </div>
+                    <div class="flex items-center gap-4 min-w-[200px] opacity-40">
+                        <div class="w-12 h-12 bg-white/10 rounded-lg"></div>
+                        <span class="font-bold text-sm tracking-widest uppercase">EMPRESA X</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUEM SOMOS -->
+    <section id="quem-somos" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
+            <div class="space-y-10">
+                <h2 class="text-5xl font-extrabold tracking-tighter text-purewhite">QUEM SOMOS</h2>
+                <p class="text-xl text-gray-400 leading-relaxed">
+                    A <span class="text-skyblue font-bold">INOVE ANGOLA R.L</span> é o motor estratégico da economia real angolana. Atuamos onde a inovação encontra a produção sustentável.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-8 rounded-3xl border-l-4 border-l-skyblue">
+                        <h4 class="font-black text-purewhite text-xs uppercase mb-4 tracking-widest">Visão 2030</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">Padrão nacional absoluto em fomento, certificação estratégica e gestão de risco produtivo.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-3xl border-l-4 border-l-white">
+                        <h4 class="font-black text-purewhite text-xs uppercase mb-4 tracking-widest">Missão Real</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">Acelerar o potencial de agricultores e PMEs, removendo fricções financeiras.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="relative group">
+                <div class="absolute inset-0 bg-skyblue/20 blur-[100px] rounded-full group-hover:bg-skyblue/30 transition"></div>
+                <img src="quem-somos.jpg" class="relative rounded-[4rem] z-10 border border-white/10 shadow-2xl opacity-80" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000'">
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section id="servicos" class="py-32 px-6 bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-24">
+                <h2 class="text-6xl font-extrabold tracking-tighter text-purewhite mb-6">NOSSOS SERVIÇOS</h2>
+                <div class="w-24 h-1 bg-skyblue mx-auto"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="glass-card p-12 rounded-[3.5rem] group">
+                    <div class="w-16 h-16 bg-skyblue/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-skyblue transition duration-500">
+                        <i class="fas fa-network-wired text-3xl text-skyblue group-hover:text-navy"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Núcleos Setoriais</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Especialização técnica profunda em Agro, Indústria e Comércio com mentores angolanos.</p>
+                </div>
+                <div class="glass-card p-12 rounded-[3.5rem] group">
+                    <div class="w-16 h-16 bg-skyblue/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-skyblue transition duration-500">
+                        <i class="fas fa-fingerprint text-3xl text-skyblue group-hover:text-navy"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Rastreabilidade</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Acompanhamento digital e físico de cada Kwanza investido no campo ou na fábrica.</p>
+                </div>
+                <div class="glass-card p-12 rounded-[3.5rem] group">
+                    <div class="w-16 h-16 bg-skyblue/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-skyblue transition duration-500">
+                        <i class="fas fa-medal text-3xl text-skyblue group-hover:text-navy"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Certificação</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">O Selo Inove que abre as portas dos principais bancos comerciais e fundos públicos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SELO INOVE -->
+    <section id="selo" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto glass-card p-12 md:p-24 rounded-[5rem] border-skyblue/20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-skyblue/10 blur-[120px]"></div>
+            <div class="grid lg:grid-cols-2 gap-20 items-center relative z-10">
+                <div class="space-y-10">
+                    <h2 class="text-7xl font-extrabold tracking-tighter text-purewhite leading-none uppercase">O SELO <br><span class="text-skyblue italic">INOVE</span></h2>
+                    <p class="text-xl text-gray-400">Nossa metodologia de qualificação é a garantia que o mercado exige. Menos burocracia, mais confiança.</p>
+                    <div class="flex gap-4">
+                        <div class="px-6 py-3 bg-white/5 rounded-2xl border border-white/10 flex items-center gap-3">
+                            <i class="fas fa-check-double text-skyblue"></i>
+                            <span class="text-[10px] font-bold tracking-widest uppercase">Qualificação 360</span>
+                        </div>
+                        <div class="px-6 py-3 bg-white/5 rounded-2xl border border-white/10 flex items-center gap-3">
+                            <i class="fas fa-shield-alt text-skyblue"></i>
+                            <span class="text-[10px] font-bold tracking-widest uppercase">Garantia Técnica</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-8 border-l border-white/10 pl-10">
+                    <div class="flex gap-8 items-center">
+                        <span class="text-6xl font-black text-white/10 italic">01</span>
+                        <div><h4 class="font-bold text-xl text-purewhite">Diagnóstico</h4><p class="text-gray-500 text-sm">Análise operacional exaustiva.</p></div>
+                    </div>
+                    <div class="flex gap-8 items-center">
+                        <span class="text-6xl font-black text-white/10 italic">02</span>
+                        <div><h4 class="font-bold text-xl text-purewhite">Estruturação</h4><p class="text-gray-500 text-sm">Criação de planos de negócio bancáveis.</p></div>
+                    </div>
+                    <div class="flex gap-8 items-center">
+                        <span class="text-6xl font-black text-white/10 italic">03</span>
+                        <div><h4 class="font-bold text-xl text-purewhite">Certificação</h4><p class="text-gray-500 text-sm">Acesso direto a financiamento preferencial.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOTÍCIAS -->
+    <section id="noticias" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-extrabold tracking-tighter uppercase mb-20 text-center">NOTÍCIAS</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-[3.5rem] overflow-hidden group">
+                    <div class="h-64 overflow-hidden"><img src="noticia-huila.png" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80&w=600'"></div>
+                    <div class="p-10">
+                        <span class="text-skyblue text-[10px] font-bold tracking-widest uppercase">Certificação 2025</span>
+                        <h3 class="text-xl font-bold mt-4 mb-4 text-purewhite">SELO INOVE NA HUÍLA</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Mais de 20 empresas qualificadas prontas para financiamento estratégico na região sul.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-[3.5rem] overflow-hidden group">
+                    <div class="h-64 overflow-hidden"><img src="noticia-parceria.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'"></div>
+                    <div class="p-10">
+                        <span class="text-skyblue text-[10px] font-bold tracking-widest uppercase">Memorando</span>
+                        <h3 class="text-xl font-bold mt-4 mb-4 text-purewhite">MEMORANDO KOVASU</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Lançamento oficial da Rede de Hubs de Inovação Zénete que acelerará Angola.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-[3.5rem] overflow-hidden group">
+                    <div class="h-64 overflow-hidden"><img src="noticia-inovacao.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1531206715517-5ca5c7f50830?q=80&w=600'"></div>
+                    <div class="p-10">
+                        <span class="text-skyblue text-[10px] font-bold tracking-widest uppercase">Inovação Tech</span>
+                        <h3 class="text-xl font-bold mt-4 mb-4 text-purewhite">TECNOLOGIA 360</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Implementação de monitoramento digital para garantir o sucesso das colheitas 2026.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTOS -->
+    <section id="contactos" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+            <div class="space-y-12">
+                <h2 class="text-7xl font-extrabold tracking-tighter uppercase text-purewhite">FALE <br><span class="text-skyblue">CONNOSCO</span></h2>
+                <div class="space-y-8">
+                    <div class="glass-card p-10 rounded-[3rem] border-l-4 border-skyblue">
+                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[4px] mb-4">Terminais Oficiais</p>
+                        <p class="text-3xl font-black text-purewhite mb-2">944 299 800</p>
+                        <p class="text-3xl font-black text-purewhite">947 433 440</p>
+                    </div>
+                    <div class="glass-card p-10 rounded-[3rem] border-l-4 border-white">
+                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[4px] mb-4">Email Corporativo</p>
+                        <p class="text-2xl font-black text-purewhite">geral@inoveangola.co.ao</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card p-12 md:p-16 rounded-[4rem]">
+                <form action="https://formspree.io/f/xrelndkb" method="POST" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" name="nome" placeholder="NOME COMPLETO" required class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue transition text-white">
+                        <select name="categoria" required class="w-full p-6 bg-navy border border-white/10 rounded-2xl outline-none focus:border-skyblue transition text-gray-400">
+                            <option value="">ASSUNTO / CATEGORIA</option>
+                            <option value="cooperado">Quero ser Cooperado</option>
+                            <option value="selo">Certificação (Selo Inove)</option>
+                            <option value="financiamento">Acesso a Financiamento</option>
+                            <option value="outros">Outros Assuntos</option>
+                        </select>
+                    </div>
+                    <input type="email" name="email" placeholder="EMAIL VÁLIDO" required class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue transition text-white">
+                    <textarea name="mensagem" placeholder="DESCREVA O SEU PROJETO OU DÚVIDA..." rows="4" required class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue transition text-white"></textarea>
+                    <button type="submit" class="btn-pro w-full bg-skyblue text-navy font-black py-6 rounded-2xl uppercase tracking-widest text-lg">Enviar Pedido</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 px-6 text-center border-t border-white/5">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <img src="logo-inove.png" class="h-16 mx-auto opacity-40 hover:opacity-100 transition" alt="Logo Inove">
+            <div class="flex justify-center gap-10 text-gray-500 text-2xl">
+                <a href="#" class="hover:text-skyblue transition"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-skyblue transition"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-skyblue transition"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="text-[10px] font-bold uppercase tracking-[6px] text-gray-600 italic">© 2026 COOPERATIVA MULTISSETORIAL INOVE ANGOLA R.L.</p>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('menuBtn'), overlay = document.getElementById('overlay'), links = document.querySelectorAll('.link-item');
+        btn.addEventListener('click', () => {
+            overlay.classList.toggle('active');
+            const l1 = document.getElementById('line1'), l2 = document.getElementById('line2');
+            if(overlay.classList.contains('active')) {
+                l1.style.transform = 'rotate(45deg) translateY(6px)'; l2.style.transform = 'rotate(-45deg) translateY(-6px)';
+                btn.style.backgroundColor = '#ffffff';
+            } else {
+                l1.style.transform = 'none'; l2.style.transform = 'none'; btn.style.backgroundColor = '#42a5f5';
+            }
+        });
+        links.forEach(l => l.addEventListener('click', () => { 
+            overlay.classList.remove('active'); 
+            document.getElementById('line1').style.transform = 'none';
+            document.getElementById('line2').style.transform = 'none';
+            btn.style.backgroundColor = '#42a5f5';
+        }));
+    </script>
+</body>
+</html>
+</body>
+</html>
