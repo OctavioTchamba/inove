@@ -11,7 +11,7 @@
             theme: {
                 extend: {
                     colors: { navy: '#0a111f', skyblue: '#42a5f5', purewhite: '#ffffff' },
-                    animation: { 'infinite-scroll': 'infinite-scroll 35s linear infinite' },
+                    animation: { 'infinite-scroll': 'infinite-scroll 30s linear infinite' },
                     keyframes: { 'infinite-scroll': { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-100%)' } } }
                 }
             }
@@ -24,10 +24,11 @@
         .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(66, 165, 245, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(66, 165, 245, 0.05) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse at center, black, transparent 90%); }
         .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.4s ease; }
         .glass-card:hover { border-color: #42a5f5; transform: translateY(-5px); background: rgba(255, 255, 255, 0.06); }
-        .btn-pro { position: relative; overflow: hidden; transition: all 0.4s ease; cursor: pointer; }
-        .btn-pro:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(66, 165, 245, 0.4); }
-        .menu-overlay { transform: translateY(-100%); transition: all 0.6s cubic-bezier(0.85, 0, 0.15, 1); }
+        .btn-pro { transition: all 0.3s ease; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-pro:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(66, 165, 245, 0.3); }
+        .menu-overlay { transform: translateY(-100%); transition: all 0.5s cubic-bezier(0.85, 0, 0.15, 1); z-index: 100; }
         .menu-overlay.active { transform: translateY(0); }
+        h1, h2 { word-break: break-word; }
     </style>
 </head>
 <body>
@@ -36,25 +37,29 @@
 
     <!-- NAVEGAÇÃO -->
     <nav class="fixed top-0 w-full z-50 bg-navy/90 backdrop-blur-xl border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center h-22">
-            <a href="#home"><img src="logo-inove.png" alt="INOVE" class="h-12 md:h-14 w-auto object-contain"></a>
+        <div class="max-w-[1400px] mx-auto px-4 md:px-6 py-3 flex justify-between items-center h-20">
+            <a href="#home" class="shrink-0">
+                <img src="logo-inove.png" alt="INOVE" class="h-10 md:h-14 w-auto object-contain" onerror="this.src='https://via.placeholder.com/150x50?text=INOVE+ANGOLA'">
+            </a>
 
-            <ul class="hidden lg:flex space-x-6 font-bold text-[10px] uppercase tracking-[2px] text-white">
-                <li><a href="#quem-somos" class="hover:text-skyblue transition">Quem Somos</a></li>
-                <li><a href="#fazemos" class="hover:text-skyblue transition">O Que Fazemos</a></li>
-                <li><a href="#selo" class="hover:text-skyblue transition">Selo Inove</a></li>
-                <li><a href="#servicos" class="hover:text-skyblue transition">Serviços</a></li>
-                <li><a href="#cooperados" class="hover:text-skyblue transition">Seja Cooperado</a></li>
-                <li><a href="#contactos" class="hover:text-skyblue transition">Contacto</a></li>
+            <!-- MENU SUPERIOR COMPLETO -->
+            <ul class="hidden xl:flex space-x-5 font-bold text-[9px] uppercase tracking-[1px] text-white">
+                <li><a href="#home" data-i18n="nav-home" class="hover:text-skyblue transition">Início</a></li>
+                <li><a href="#quem-somos" data-i18n="nav-about" class="hover:text-skyblue transition">Quem Somos</a></li>
+                <li><a href="#fazemos" data-i18n="nav-what" class="hover:text-skyblue transition">O Que Fazemos</a></li>
+                <li><a href="#selo" data-i18n="nav-seal" class="hover:text-skyblue transition">Selo Inove</a></li>
+                <li><a href="#servicos" data-i18n="nav-services" class="hover:text-skyblue transition">Serviços</a></li>
+                <li><a href="#cooperados" data-i18n="nav-join" class="hover:text-skyblue transition">Seja Cooperado</a></li>
+                <li><a href="#contactos" data-i18n="nav-contact" class="hover:text-skyblue transition">Contacto</a></li>
             </ul>
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/10 text-[9px] font-bold">
-                    <button onclick="changeLang('pt')" class="hover:text-skyblue transition">PT</button>
-                    <button onclick="changeLang('en')" class="hover:text-skyblue transition">EN</button>
-                    <button onclick="changeLang('fr')" class="hover:text-skyblue transition">FR</button>
+                    <button onclick="translatePage('pt')" class="hover:text-skyblue transition">PT</button>
+                    <button onclick="translatePage('en')" class="hover:text-skyblue transition">EN</button>
+                    <button onclick="translatePage('fr')" class="hover:text-skyblue transition">FR</button>
                 </div>
-                <button id="menuBtn" class="w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-skyblue rounded-full hover:bg-white transition-all group">
+                <button id="menuBtn" class="w-10 h-10 flex flex-col justify-center items-center gap-1.5 bg-skyblue rounded-full transition-all group">
                     <div id="line1" class="w-5 h-0.5 bg-navy transition-all"></div>
                     <div id="line2" class="w-5 h-0.5 bg-navy transition-all"></div>
                 </button>
@@ -62,245 +67,260 @@
         </div>
     </nav>
 
-    <!-- MENU FULLSCREEN -->
-    <div id="overlay" class="menu-overlay fixed inset-0 bg-navy z-[40] flex flex-col items-center justify-center">
-        <ul class="text-center space-y-6 text-4xl md:text-6xl font-extrabold uppercase tracking-tighter text-white">
-            <li><a href="#home" class="hover:text-skyblue transition link-item">Início</a></li>
-            <li><a href="#quem-somos" class="hover:text-skyblue transition link-item">Quem Somos</a></li>
-            <li><a href="#fazemos" class="hover:text-skyblue transition link-item">O Que Fazemos</a></li>
-            <li><a href="#selo" class="hover:text-skyblue transition link-item">Selo INOVE</a></li>
-            <li><a href="#servicos" class="hover:text-skyblue transition link-item">Serviços</a></li>
-            <li><a href="#cooperados" class="hover:text-skyblue transition link-item">Seja Cooperado</a></li>
-            <li><a href="#contactos" class="hover:text-skyblue transition link-item">Contactos</a></li>
+    <!-- MENU OVERLAY -->
+    <div id="overlay" class="menu-overlay fixed inset-0 bg-navy flex flex-col items-center justify-center">
+        <ul class="text-center space-y-6 text-3xl md:text-5xl font-extrabold uppercase tracking-tighter text-white">
+            <li><a href="#home" class="link-item" data-i18n="nav-home">Início</a></li>
+            <li><a href="#quem-somos" class="link-item" data-i18n="nav-about">Quem Somos</a></li>
+            <li><a href="#fazemos" class="link-item" data-i18n="nav-what">O Que Fazemos</a></li>
+            <li><a href="#selo" class="link-item" data-i18n="nav-seal">Selo INOVE</a></li>
+            <li><a href="#noticias" class="link-item" data-i18n="nav-news">Notícias</a></li>
+            <li><a href="#contactos" class="link-item text-skyblue" data-i18n="nav-contact">Contactos</a></li>
         </ul>
     </div>
 
     <!-- HERO SECTION -->
-    <section id="home" class="min-h-screen flex items-center pt-20 px-6">
+    <section id="home" class="min-h-screen flex items-center pt-24 pb-12 px-4 md:px-6">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-center w-full">
-            <div class="space-y-10">
-                <div class="inline-flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-skyblue text-[10px] font-black uppercase tracking-[4px]">
+            <div class="space-y-8 text-center lg:text-left">
+                <div class="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-skyblue text-[9px] font-black uppercase tracking-[3px]">
                     <span class="animate-pulse w-2 h-2 bg-skyblue rounded-full"></span> Angola 2026
                 </div>
-                <h1 class="text-6xl md:text-[85px] font-extrabold leading-[0.85] tracking-tighter text-white">
-                    A COOPERAÇÃO <br> QUE <span class="text-skyblue">ACELERA ANGOLA</span>
+                <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-[85px] font-extrabold leading-[1] tracking-tighter text-white uppercase" data-i18n="hero-title">
+                    A COOPERAÇÃO QUE <span class="text-skyblue italic">ACELERA ANGOLA</span>
                 </h1>
-                <p class="text-xl text-gray-400 max-w-lg leading-relaxed border-l-2 border-skyblue pl-6">
-                    Qualificamos o potencial produtivo de Angola através de estratégia, tecnologia e mitigação real de risco.
+                <p class="text-lg md:text-xl text-gray-400 max-w-lg mx-auto lg:mx-0 leading-relaxed" data-i18n="hero-subtitle">
+                    Qualificamos o potencial produtivo através de estratégia, tecnologia e mitigação real de risco.
                 </p>
-                <a href="#contactos" class="btn-pro inline-block bg-skyblue text-navy px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-sm">Aderir Agora</a>
-            </div>
-            <div class="relative hidden lg:block">
-                <div class="p-6 bg-white/5 rounded-[4rem] border border-white/10"><img src="hero-planta.jpg" class="rounded-[3rem] w-full h-[600px] object-cover opacity-90 shadow-2xl" onerror="this.src='https://images.unsplash.com/photo-1485244539055-5f60bbb97ef9?q=80&w=1000'"></div>
-                <div class="absolute -bottom-8 -left-8 glass-card p-10 rounded-[2.5rem] border-white/20 shadow-2xl"><div class="text-7xl font-black text-white leading-none">80%</div><div class="text-[10px] font-bold uppercase tracking-[5px] text-skyblue mt-4">Taxa de Sucesso</div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- QUEM SOMOS -->
-    <section id="quem-somos" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
-            <div class="space-y-8">
-                <h2 class="text-5xl font-extrabold tracking-tighter uppercase">Quem Somos</h2>
-                <p class="text-lg text-gray-400 leading-relaxed">A <span class="text-skyblue font-bold">INOVE ANGOLA R.L</span> é uma Cooperativa Multissetorial dedicada a impulsionar o crescimento económico sustentável. Atuamos como a Plataforma Estratégica que qualifica o potencial produtivo nacional.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-card p-8 rounded-3xl border-l-4 border-skyblue"><h4 class="font-black text-white text-[10px] uppercase mb-2 tracking-widest">Visão</h4><p class="text-sm text-gray-500">Ser o parceiro padrão para financiamento em Angola.</p></div>
-                    <div class="glass-card p-8 rounded-3xl border-l-4 border-white"><h4 class="font-black text-white text-[10px] uppercase mb-2 tracking-widest">Missão</h4><p class="text-sm text-gray-500">Superar barreiras de acesso a fundos e gestão técnica.</p></div>
+                <div class="flex justify-center lg:justify-start">
+                    <a href="#contactos" class="btn-pro bg-skyblue text-navy px-10 py-4 rounded-xl font-black uppercase tracking-widest text-sm" data-i18n="btn-join">Aderir Agora</a>
                 </div>
             </div>
-            <img src="quem-somos.jpg" class="rounded-[4rem] opacity-70 shadow-2xl" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000'">
-        </div>
-    </section>
-
-    <!-- O QUE FAZEMOS (PROCESSO 01-04) -->
-    <section id="fazemos" class="py-32 px-6 bg-white/[0.01]">
-        <div class="max-w-7xl mx-auto mb-20 text-center"><h2 class="text-5xl font-extrabold tracking-tighter uppercase">Nosso Processo de Trabalho</h2></div>
-        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 text-center">
-            <div class="glass-card p-10 rounded-[3rem] relative">
-                <span class="text-5xl font-black text-white/10 absolute top-6 right-8 italic">01</span>
-                <h4 class="font-bold text-xl mb-4 text-skyblue">Diagnóstico</h4><p class="text-gray-500 text-sm">Análise completa da situação atual do seu projeto.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[3rem] relative">
-                <span class="text-5xl font-black text-white/10 absolute top-6 right-8 italic">02</span>
-                <h4 class="font-bold text-xl mb-4 text-skyblue">Qualificação</h4><p class="text-gray-500 text-sm">Capacitação e formação técnica especializada.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[3rem] relative">
-                <span class="text-5xl font-black text-white/10 absolute top-6 right-8 italic">03</span>
-                <h4 class="font-bold text-xl mb-4 text-skyblue">Estruturação</h4><p class="text-gray-500 text-sm">Desenvolvimento do projeto e plano de negócios bancáveis.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[3rem] relative">
-                <span class="text-5xl font-black text-white/10 absolute top-6 right-8 italic">04</span>
-                <h4 class="font-bold text-xl mb-4 text-skyblue">Acompanhamento</h4><p class="text-gray-500 text-sm">Suporte contínuo e monitoramento 360º pós-financiamento.</p>
+            <div class="relative mt-10 lg:mt-0">
+                <div class="p-3 md:p-6 bg-white/5 rounded-[2rem] border border-white/10 shadow-2xl">
+                    <img src="hero-planta.jpg" class="rounded-[1.5rem] md:rounded-[3rem] w-full h-[350px] md:h-[600px] object-cover opacity-90" onerror="this.src='https://images.unsplash.com/photo-1485244539055-5f60bbb97ef9?q=80&w=800'">
+                </div>
+                <div class="absolute -bottom-5 -left-5 md:-bottom-8 md:-left-8 glass-card p-6 md:p-10 rounded-[1.5rem] border-white/20 shadow-2xl">
+                    <div class="text-4xl md:text-7xl font-black text-white leading-none">80%</div>
+                    <div class="text-[8px] md:text-[10px] font-bold uppercase tracking-[3px] text-skyblue mt-2" data-i18n="success-rate">Taxa de Sucesso</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SELO INOVE -->
-    <section id="selo" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto glass-card p-12 md:p-24 rounded-[5rem] border-skyblue/20">
-            <div class="grid lg:grid-cols-2 gap-20 items-center">
-                <div class="space-y-10">
-                    <h2 class="text-7xl font-extrabold tracking-tighter text-white leading-none uppercase">O SELO <br><span class="text-skyblue italic">INOVE</span></h2>
-                    <p class="text-xl text-gray-400 leading-relaxed">Nossa principal força é a capacidade de reduzir o risco de crédito. O Selo INOVE é a chancela que desbloqueia a confiança das instituições financeiras.</p>
+    <!-- QUEM SOMOS (DESCRIÇÃO COMPLETA RESTAURADA) -->
+    <section id="quem-somos" class="py-20 md:py-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 md:gap-20 items-center">
+            <div class="space-y-8">
+                <h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter uppercase" data-i18n="nav-about">Quem Somos</h2>
+                <div class="space-y-4 text-base md:text-lg text-gray-400 leading-relaxed" data-i18n="about-text">
+                    <p>A <span class="text-skyblue font-bold">INOVE ANGOLA R.L</span> é uma instituição de apoio e desenvolvimento dedicada a impulsionar o crescimento económico sustentável de Angola.</p>
+                    <p>Nascida sob os princípios da intercooperação, atuamos como a <span class="text-white font-bold">Plataforma Estratégica</span> que qualifica e articula o potencial produtivo de agricultores, PMEs e startups em diversos setores nacionais.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-skyblue"><h4 class="font-black text-white text-[10px] uppercase mb-1 tracking-widest" data-i18n="vision">Visão</h4><p class="text-xs text-gray-500" data-i18n="vision-desc">Ser o parceiro padrão para financiamento em Angola.</p></div>
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-white"><h4 class="font-black text-white text-[10px] uppercase mb-1 tracking-widest" data-i18n="mission">Missão</h4><p class="text-xs text-gray-500" data-i18n="mission-desc">Superar barreiras de acesso a fundos e gestão técnica.</p></div>
+                </div>
+            </div>
+            <img src="quem-somos.jpg" class="rounded-[2rem] md:rounded-[4rem] opacity-70 shadow-2xl w-full" loading="lazy">
+        </div>
+    </section>
+
+    <!-- O QUE FAZEMOS / PROCESSO -->
+    <section id="fazemos" class="py-20 md:py-32 px-4 md:px-6 bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto mb-16 text-center lg:text-left"><h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter uppercase" data-i18n="process-title">Nosso Processo de Trabalho</h2></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="glass-card p-8 rounded-[2rem] relative">
+                <span class="text-5xl font-black text-white/10 absolute top-4 right-6 italic">01</span>
+                <h4 class="font-bold text-lg mb-2 text-skyblue" data-i18n="step1">Diagnóstico</h4><p class="text-gray-500 text-xs" data-i18n="step1-desc">Análise completa da situação atual do seu projeto.</p>
+            </div>
+            <div class="glass-card p-8 rounded-[2rem] relative">
+                <span class="text-5xl font-black text-white/10 absolute top-4 right-6 italic">02</span>
+                <h4 class="font-bold text-lg mb-2 text-skyblue" data-i18n="step2">Qualificação</h4><p class="text-gray-500 text-xs" data-i18n="step2-desc">Capacitação e formação técnica especializada.</p>
+            </div>
+            <div class="glass-card p-8 rounded-[2rem] relative">
+                <span class="text-5xl font-black text-white/10 absolute top-4 right-6 italic">03</span>
+                <h4 class="font-bold text-lg mb-2 text-skyblue" data-i18n="step3">Estruturação</h4><p class="text-gray-500 text-xs" data-i18n="step3-desc">Desenvolvimento do projeto e planos bancáveis.</p>
+            </div>
+            <div class="glass-card p-8 rounded-[2rem] relative">
+                <span class="text-5xl font-black text-white/10 absolute top-4 right-6 italic">04</span>
+                <h4 class="font-bold text-lg mb-2 text-skyblue" data-i18n="step4">Acompanhamento</h4><p class="text-gray-500 text-xs" data-i18n="step4-desc">Suporte contínuo e monitoramento 360º.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SELO INOVE (DESCRIÇÃO E GESTÃO PROFISSIONALIZADA) -->
+    <section id="selo" class="py-20 md:py-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto glass-card p-10 md:p-24 rounded-[3rem] md:rounded-[5rem] border-skyblue/20">
+            <div class="grid lg:grid-cols-2 gap-10 items-center">
+                <div class="space-y-10 text-center lg:text-left">
+                    <h2 class="text-5xl md:text-8xl font-extrabold tracking-tighter text-white uppercase leading-none" data-i18n="nav-seal">O SELO INOVE</h2>
+                    <p class="text-base md:text-xl text-gray-400" data-i18n="seal-text">Nossa principal força é a capacidade de reduzir o risco de crédito. O Selo INOVE é a chancela que desbloqueia a confiança das instituições financeiras através do rigor técnico.</p>
                 </div>
                 <div class="space-y-6">
-                    <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10"><i class="fas fa-shield-alt text-skyblue text-2xl"></i><span class="font-bold uppercase text-xs tracking-widest">Mitigação Real de Risco</span></div>
-                    <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10"><i class="fas fa-check-double text-skyblue text-2xl"></i><span class="font-bold uppercase text-xs tracking-widest">Conformidade Legal 100%</span></div>
-                    <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10"><i class="fas fa-chart-pie text-skyblue text-2xl"></i><span class="font-bold uppercase text-xs tracking-widest">Gestão Profissionalizada</span></div>
+                    <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10"><i class="fas fa-shield-alt text-skyblue text-2xl"></i><span class="font-bold uppercase text-[10px] tracking-widest" data-i18n="risk-mitigation">Mitigação Real de Risco</span></div>
+                    <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10"><i class="fas fa-check-double text-skyblue text-2xl"></i><span class="font-bold uppercase text-[10px] tracking-widest" data-i18n="conformity">Conformidade Legal 100%</span></div>
+                    <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10"><i class="fas fa-user-tie text-skyblue text-2xl"></i><span class="font-bold uppercase text-[10px] tracking-widest" data-i18n="management">Gestão Profissionalizada</span></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- SERVIÇOS -->
-    <section id="servicos" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto text-center mb-24"><h2 class="text-5xl font-extrabold tracking-tighter uppercase">Nossos Serviços</h2></div>
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
-            <div class="glass-card p-12 rounded-[4rem] group text-center">
+    <section id="servicos" class="py-20 md:py-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto text-center mb-16 md:mb-24"><h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase" data-i18n="nav-services">Nossos Serviços</h2></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-10 rounded-[3.5rem] text-center group">
                 <i class="fas fa-microchip text-4xl text-skyblue mb-8"></i>
-                <h3 class="text-2xl font-bold mb-4">Núcleos Setoriais</h3>
-                <p class="text-gray-500 text-sm">Especialização em Agropecuária, Comércio e Indústria.</p>
+                <h3 class="text-xl md:text-2xl font-bold mb-4" data-i18n="service-nuc">Núcleos Setoriais</h3>
+                <p class="text-gray-500 text-sm" data-i18n="service-nuc-desc">Especialização técnica em Agropecuária, Comércio e Indústria.</p>
             </div>
-            <div class="glass-card p-12 rounded-[4rem] group text-center">
+            <div class="glass-card p-10 rounded-[3.5rem] text-center group border-skyblue/30 shadow-lg shadow-skyblue/5">
                 <i class="fas fa-search-dollar text-4xl text-skyblue mb-8"></i>
-                <h3 class="text-2xl font-bold mb-4">Acesso ao Capital</h3>
-                <p class="text-gray-600 text-sm">Intermediação preferencial com FADA e Bancos Comerciais.</p>
+                <h3 class="text-xl md:text-2xl font-bold mb-4" data-i18n="service-cap">Acesso ao Capital</h3>
+                <p class="text-gray-600 text-sm" data-i18n="service-cap-desc">Intermediação preferencial com instituições financeiras e investimento público e privado.</p>
             </div>
-            <div class="glass-card p-12 rounded-[4rem] group text-center">
+            <div class="glass-card p-10 rounded-[3.5rem] text-center group">
                 <i class="fas fa-sync text-4xl text-skyblue mb-8"></i>
-                <h3 class="text-2xl font-bold mb-4">Economia Circular</h3>
-                <p class="text-gray-500 text-sm">Recirculação de riqueza interna para fortalecer a rede.</p>
+                <h3 class="text-xl md:text-2xl font-bold mb-4" data-i18n="service-eco">Economia Circular</h3>
+                <p class="text-gray-500 text-sm" data-i18n="service-eco-desc">Recirculação de riqueza interna para fortalecer a rede cooperativa.</p>
             </div>
         </div>
     </section>
 
     <!-- SEJA COOPERADO -->
-    <section id="cooperados" class="py-32 px-6 bg-white/[0.01]">
-        <div class="max-w-7xl mx-auto text-center mb-24"><h2 class="text-5xl font-extrabold tracking-tighter uppercase">Quem Pode Ser Cooperado</h2></div>
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 text-center uppercase tracking-widest">
-            <div class="p-10 glass-card rounded-[3rem]"><i class="fas fa-tractor text-4xl text-skyblue mb-6"></i><h4 class="font-bold">Agricultores</h4></div>
-            <div class="p-10 glass-card rounded-[3rem]"><i class="fas fa-store text-4xl text-skyblue mb-6"></i><h4 class="font-bold">PMEs</h4></div>
-            <div class="p-10 glass-card rounded-[3rem]"><i class="fas fa-rocket text-4xl text-skyblue mb-6"></i><h4 class="font-bold">Startups</h4></div>
+    <section id="cooperados" class="py-20 md:py-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto text-center mb-16 md:mb-24"><h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter uppercase" data-i18n="nav-join">Quem Pode Ser Cooperado</h2></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 text-center uppercase tracking-widest text-[10px] md:text-xs">
+            <div class="p-8 md:p-10 glass-card rounded-[3rem]"><i class="fas fa-tractor text-3xl text-skyblue mb-4"></i><h4 class="font-bold" data-i18n="target1">Agricultores</h4></div>
+            <div class="p-8 md:p-10 glass-card rounded-[3rem]"><i class="fas fa-store text-3xl text-skyblue mb-4"></i><h4 class="font-bold" data-i18n="target2">PMEs</h4></div>
+            <div class="p-8 md:p-10 glass-card rounded-[3rem]"><i class="fas fa-rocket text-3xl text-skyblue mb-4"></i><h4 class="font-bold" data-i18n="target3">Startups</h4></div>
         </div>
     </section>
 
-    <!-- NOTÍCIAS -->
-    <section id="noticias" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto mb-20 text-center lg:text-left"><h2 class="text-5xl font-extrabold tracking-tighter uppercase">Atualizações Estratégicas</h2></div>
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-            <div class="glass-card rounded-[4rem] overflow-hidden group">
-                <img src="noticia-huila.png" class="w-full h-64 object-cover opacity-60 group-hover:opacity-100 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80&w=600'">
-                <div class="p-10">
-                    <span class="text-skyblue text-[10px] font-bold tracking-widest uppercase">Certificação 2025</span>
-                    <h3 class="text-xl font-bold mt-4 mb-4 text-white">SELO INOVE NA HUÍLA</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Mais de 20 empresas qualificadas e certificadas com o Selo Inove prontas para o financiamento estratégico na região sul de Angola em 2025.</p>
+    <!-- NOTÍCIAS (BASE RESTAURADA) -->
+    <section id="noticias" class="py-20 md:py-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto mb-16 text-center lg:text-left"><h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter uppercase" data-i18n="nav-news">Notícias</h2></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-left">
+            <div class="glass-card rounded-[3rem] overflow-hidden group">
+                <img src="noticia-huila.png" class="w-full h-56 md:h-64 object-cover opacity-60" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80&w=600'">
+                <div class="p-8">
+                    <span class="text-skyblue text-[9px] font-bold tracking-widest uppercase">Certificação 2025</span>
+                    <h3 class="text-lg md:text-xl font-bold mt-4 mb-4" data-i18n="news1-title">Selo Inove na Huíla</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed" data-i18n="news1-desc">Mais de 20 empresas qualificadas e certificadas com o Selo Inove prontas para o financiamento estratégico na região sul de Angola em 2025.</p>
                 </div>
             </div>
-            <div class="glass-card rounded-[4rem] overflow-hidden group">
-                <img src="noticia-parceria.jpg" class="w-full h-64 object-cover opacity-60 group-hover:opacity-100 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=600'">
-                <div class="p-10">
-                    <span class="text-skyblue text-[10px] font-bold tracking-widest uppercase">Parceria Oficial</span>
-                    <h3 class="text-xl font-bold mt-4 mb-4 text-white">MEMORANDO KOVASU</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Cooperativa assina memorando de entendimento com a Kovasu Angola para lançamento da Rede de Hubs de Inovação Zénete acelera angola.</p>
+            <div class="glass-card rounded-[3rem] overflow-hidden group">
+                <img src="noticia-parceria.jpg" class="w-full h-56 md:h-64 object-cover opacity-60" loading="lazy">
+                <div class="p-8">
+                    <span class="text-skyblue text-[9px] font-bold tracking-widest uppercase">Parceria Oficial</span>
+                    <h3 class="text-lg md:text-xl font-bold mt-4 mb-4" data-i18n="news2-title">Memorando Kovasu</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed" data-i18n="news2-desc">Cooperativa assina memorando com a Kovasu Angola para lançamento da Rede de Hubs Zénete acelera angola.</p>
                 </div>
             </div>
-            <div class="glass-card rounded-[4rem] overflow-hidden group">
-                <img src="noticia-inovacao.jpg" class="w-full h-64 object-cover opacity-60 group-hover:opacity-100 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1531206715517-5ca5c7f50830?q=80&w=600'">
-                <div class="p-10">
-                    <span class="text-skyblue text-[10px] font-bold tracking-widest uppercase">Monitoramento</span>
-                    <h3 class="text-xl font-bold mt-4 mb-4 text-white">TECNOLOGIA 360</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Implementação de sistemas de rastreabilidade digital para garantir a segurança dos investimentos dos nossos cooperados.</p>
+            <div class="glass-card rounded-[3rem] overflow-hidden group">
+                <img src="noticia-inovacao.jpg" class="w-full h-56 md:h-64 object-cover opacity-60" loading="lazy">
+                <div class="p-8">
+                    <span class="text-skyblue text-[9px] font-bold tracking-widest uppercase">Tecnologia</span>
+                    <h3 class="text-lg md:text-xl font-bold mt-4 mb-4" data-i18n="news3-title">Tecnologia 360º</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed" data-i18n="news3-desc">Novos sistemas de rastreabilidade digital para garantir a segurança dos investimentos dos cooperados.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CARROSSEL DE PARCEIROS (Logos) -->
-    <section class="py-20 bg-white/[0.02] border-y border-white/5 mt-20">
+    <!-- PARCEIROS (APENAS NOMES) -->
+    <section class="py-16 md:py-24 bg-white/[0.02] border-y border-white/5">
         <div class="max-w-7xl mx-auto px-6 overflow-hidden">
-            <p class="text-center text-[10px] font-bold uppercase tracking-[5px] text-gray-500 mb-12">Nossos Parceiros Oficiais</p>
-            <div class="flex animate-infinite-scroll space-x-20 items-center whitespace-nowrap">
-                <!-- Para cada item, salve o logo como parceiro1.png etc e use: <img src="parceiro1.png" class="h-12 w-auto grayscale"> -->
-                <div class="flex items-center space-x-20">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">INAPEM</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Governo de Angola</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Zénete Acelera</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">GUE</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Kovasu Angola</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Bicuar</span></div>
+            <p class="text-center text-[9px] font-bold uppercase tracking-[5px] text-gray-500 mb-12">Nossos Parceiros Oficiais</p>
+            <div class="flex animate-infinite-scroll whitespace-nowrap items-center">
+                <div class="flex items-center space-x-12 md:space-x-24 shrink-0 px-12">
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">INAPEM</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Governo de Angola</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Zénete Acelera</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">GUE</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Kovasu Angola</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Bicuar</span>
                 </div>
-                <!-- Clonagem -->
-                <div class="flex items-center space-x-20 ml-20">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">INAPEM</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Governo de Angola</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Zénete Acelera</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">GUE</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Kovasu Angola</span></div>
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/10 rounded-lg"></div><span class="font-black text-xs tracking-widest uppercase opacity-40">Bicuar</span></div>
+                <div class="flex items-center space-x-12 md:space-x-24 shrink-0 px-12" aria-hidden="true">
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">INAPEM</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Governo de Angola</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Zénete Acelera</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">GUE</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Kovasu Angola</span>
+                    <span class="text-xl md:text-2xl font-black opacity-30 uppercase tracking-widest">Bicuar</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CONTACTOS -->
-    <section id="contactos" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20">
-            <div class="space-y-12">
-                <h2 class="text-7xl font-extrabold tracking-tighter uppercase text-white leading-none">FALE <br><span class="text-skyblue italic">CONNOSCO</span></h2>
-                <div class="space-y-6">
-                    <div class="glass-card p-10 rounded-[3rem] border-l-4 border-skyblue text-center lg:text-left">
-                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[4px] mb-4">Telemóveis Oficiais</p>
-                        <p class="text-3xl font-black">944 299 800 / 947 433 440</p>
-                    </div>
-                    <div class="glass-card p-10 rounded-[3rem] border-l-4 border-white text-center lg:text-left">
-                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[4px] mb-4">Email Corporativo</p>
-                        <p class="text-2xl font-black">geral@inoveangola.co.ao</p>
-                    </div>
+    <section id="contactos" class="py-20 md:py-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 md:gap-20">
+            <div class="space-y-8 md:space-y-12">
+                <h2 class="text-6xl md:text-[80px] font-extrabold tracking-tighter uppercase text-white leading-none">FALE <br><span class="text-skyblue italic">CONNOSCO</span></h2>
+                <div class="glass-card p-8 md:p-10 rounded-[2.5rem] border-l-4 border-skyblue text-center lg:text-left">
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-4">Contactos</p>
+                    <p class="text-xl md:text-3xl font-black mb-1">944 299 800 / 947 433 440</p>
+                    <p class="text-sm md:text-lg font-medium text-skyblue lowercase">cooperativainoveangola@gmail.com</p>
                 </div>
             </div>
-            <div class="glass-card p-12 md:p-16 rounded-[4rem]">
-                <form action="https://formspree.io/f/xrelndkb" method="POST" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <input type="text" name="nome" placeholder="NOME COMPLETO" required class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue transition">
-                        <select name="categoria" required class="w-full p-6 bg-navy border border-white/10 rounded-2xl outline-none focus:border-skyblue transition text-gray-400">
-                            <option value="">CATEGORIA / PERFIL</option>
-                            <option value="cooperado">Quero ser Cooperado</option>
-                            <option value="parceiro">Quero ser Parceiro</option>
-                            <option value="investidor">Sou Investidor</option>
-                            <option value="outros">Outros Assuntos</option>
+            <div class="glass-card p-10 md:p-12 rounded-[2.5rem] md:rounded-[4rem]">
+                <form action="https://formspree.io/f/xrelndkb" method="POST" class="space-y-4 md:space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" name="nome" placeholder="NOME" required class="w-full p-4 md:p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue text-white">
+                        <select name="categoria" required class="w-full p-4 md:p-6 bg-navy border border-white/10 rounded-2xl outline-none focus:border-skyblue text-gray-400">
+                            <option value="">CATEGORIA</option>
+                            <option value="cooperado">Cooperado</option>
+                            <option value="parceiro">Parceiro / Investidor</option>
                         </select>
                     </div>
-                    <input type="email" name="email" placeholder="EMAIL VÁLIDO" required class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue transition">
-                    <textarea name="mensagem" placeholder="DESCREVA O SEU PROJETO OU INTERESSE..." rows="4" required class="w-full p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue transition"></textarea>
-                    <button type="submit" class="btn-pro w-full bg-skyblue text-navy font-black py-6 rounded-2xl uppercase tracking-widest text-lg shadow-xl shadow-skyblue/20">Enviar Pedido</button>
+                    <input type="email" name="email" placeholder="EMAIL" required class="w-full p-4 md:p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue text-white">
+                    <textarea name="mensagem" placeholder="MENSAGEM" rows="4" required class="w-full p-4 md:p-6 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-skyblue text-white"></textarea>
+                    <button type="submit" class="btn-pro w-full bg-skyblue text-navy font-black py-4 md:py-6 rounded-2xl uppercase tracking-widest shadow-lg">Enviar Agora</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 px-6 text-center border-t border-white/5">
-        <img src="logo-inove.png" class="h-16 mx-auto mb-10 opacity-30">
-        <p class="text-[10px] font-bold uppercase tracking-[5px] text-gray-600">© 2026 COOPERATIVA MULTISSETORIAL INOVE ANGOLA R.L.</p>
+    <!-- FOOTER -->
+    <footer class="py-12 md:py-20 text-center border-t border-white/5">
+        <img src="logo-inove.png" class="h-10 md:h-14 mx-auto mb-10 opacity-30" loading="lazy">
+        <p class="text-[8px] md:text-[10px] font-bold uppercase tracking-[4px] text-gray-600 px-4 italic">© 2026 INOVE ANGOLA R.L. - Todos os direitos reservados.</p>
     </footer>
 
     <script>
-        // Sistema de Idiomas
         const translations = {
-            en: { "Quem Somos": "About Us", "Serviços": "Services", "Selo Inove": "Inove Seal", "Notícias": "News", "A COOPERAÇÃO QUE ACELERA ANGOLA": "COOPERATION THAT ACCELERATES ANGOLA", "Aderir Agora": "Join Now", "TAXA DE SUCESSO": "SUCCESS RATE" },
-            fr: { "Quem Somos": "À Propos", "Serviços": "Services", "Selo Inove": "Sceau Inove", "Notícias": "Nouvelles", "A COOPERAÇÃO QUE ACELERA ANGOLA": "LA COOPÉRATION QUI ACCÉLÈRE L'ANGOLA", "Aderir Agora": "Rejoindre", "TAXA DE SUCESSO": "TAUX DE RÉUSSITE" }
+            pt: {
+                "nav-home": "Início", "nav-about": "Quem Somos", "nav-what": "O Que Fazemos", "nav-seal": "Selo Inove", "nav-services": "Serviços", "nav-join": "Seja Cooperado", "nav-contact": "Contacto", "nav-news": "Notícias",
+                "hero-title": "A COOPERAÇÃO QUE <span class='text-skyblue italic uppercase'>ACELERA ANGOLA</span>",
+                "vision": "Visão", "mission": "Missão", "success-rate": "Taxa de Sucesso",
+                "news1-title": "Selo Inove na Huíla", "news1-desc": "Mais de 20 empresas prontas para financiamento em 2025.",
+                "risk-mitigation": "Mitigação Real de Risco", "conformity": "Conformidade Legal 100%", "management": "Gestão Profissionalizada"
+            },
+            en: {
+                "nav-home": "Home", "nav-about": "About Us", "nav-what": "What We Do", "nav-seal": "Inove Seal", "nav-services": "Services", "nav-join": "Join Us", "nav-contact": "Contact", "nav-news": "News",
+                "hero-title": "COOPERATION THAT <span class='text-skyblue italic uppercase'>ACCELERATES ANGOLA</span>",
+                "vision": "Vision", "mission": "Mission", "success-rate": "Success Rate",
+                "news1-title": "Inove Seal in Huíla", "news1-desc": "Over 20 companies ready for funding in 2025.",
+                "risk-mitigation": "Real Risk Mitigation", "conformity": "100% Legal Conformity", "management": "Professional Management"
+            },
+            fr: {
+                "nav-home": "Accueil", "nav-about": "À Propos", "nav-what": "Notre Travail", "nav-seal": "Sceau Inove", "nav-services": "Services", "nav-join": "Rejoindre", "nav-contact": "Contact", "nav-news": "Nouvelles",
+                "hero-title": "LA COOPÉRATION QUI <span class='text-skyblue italic uppercase'>ACCÉLÈRE L'ANGOLA</span>",
+                "vision": "Vision", "mission": "Mission", "success-rate": "Taux de réussite",
+                "news1-title": "Sceau Inove à Huíla", "news1-desc": "Plus de 20 entreprises prêtes pour le financement.",
+                "risk-mitigation": "Atténuation des Risques", "conformity": "Conformité Légale 100%", "management": "Gestion Professionnelle"
+            }
         };
 
-        function changeLang(lang) {
-            if (lang === 'pt') window.location.reload();
-            document.querySelectorAll('[data-lang-pt]').forEach(el => {
-                const ptText = el.getAttribute('data-lang-pt');
-                if (translations[lang] && translations[lang][ptText]) {
-                    el.innerHTML = translations[lang][ptText];
-                }
+        function translatePage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
             });
         }
 
-        // Menu Toggle
         const btn = document.getElementById('menuBtn'), overlay = document.getElementById('overlay'), links = document.querySelectorAll('.link-item');
         btn.addEventListener('click', () => {
             overlay.classList.toggle('active');
